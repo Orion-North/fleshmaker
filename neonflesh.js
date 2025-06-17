@@ -1,81 +1,78 @@
-const aliases = ["Ghost", "Hex", "Vapor", "Nyx", "Echo", "Drift", "Blitz", "Cipher", "Nova", "Rogue"];
-const backgrounds = ["Ex-corp security", "Street rat", "Data thief", "Cyber-shaman", "Synth musician"];
-const augments = ["Optical camo", "Neural uplink", "Dermal armor", "Reflex booster", "Nanofiber muscles"];
-const corps = ["Biodyne Systems", "Helix Dynamics", "Novacore Industries", "OmniTech Group", "Zenith Security"];
-const syndicates = ["Red Iris", "Nightshade Collective", "Black Lotus", "Silver Serpents", "Ghosthawks"];
-const gear = ["Monofilament katana", "Smartlink pistol", "Plasma rifle", "EMP grenade", "Nano-drone swarm"];
-const mottoes = [
-  "Blood for steel.",
-  "Data is power.",
-  "Survive and adapt.",
-  "No honor among thieves.",
-  "Live fast, die old."
-];
+document.addEventListener('DOMContentLoaded', () => {
+  const aliases = ["Ghost", "Hex", "Vapor", "Nyx", "Echo", "Drift", "Blitz", "Cipher", "Nova", "Rogue"];
+  const backgrounds = ["Ex-corp security", "Street rat", "Data thief", "Cyber-shaman", "Synth musician"];
+  const augments = ["Optical camo", "Neural uplink", "Dermal armor", "Reflex booster", "Nanofiber muscles"];
+  const corps = ["Biodyne Systems", "Helix Dynamics", "Novacore Industries", "OmniTech Group", "Zenith Security"];
+  const syndicates = ["Red Iris", "Nightshade Collective", "Black Lotus", "Silver Serpents", "Ghosthawks"];
+  const gear = ["Monofilament katana", "Smartlink pistol", "Plasma rifle", "EMP grenade", "Nano-drone swarm"];
+  const mottoes = [
+    "Blood for steel.",
+    "Data is power.",
+    "Survive and adapt.",
+    "No honor among thieves.",
+    "Live fast, die old."
+  ];
 
-function pickRandom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+  const generateBtn = document.getElementById("generate");
+  const copyBtn = document.getElementById("copy");
+  const cardDiv = document.getElementById("character");
 
-function generateCharacter() {
-  const alias = pickRandom(aliases);
-  const background = pickRandom(backgrounds);
-  const selectedAugments = Array.from({ length: 3 }, () => pickRandom(augments));
-  const corp = Math.random() < 0.3 ? "Independent" : pickRandom(corps);
-  const syndicate = Math.random() < 0.4 ? "Lone wolf" : pickRandom(syndicates);
-  const selectedGear = Array.from({ length: 3 }, () => pickRandom(gear));
-  const motto = pickRandom(mottoes);
-  const bounty = `${Math.floor(Math.random() * 49000 + 1000)} credits`;
-  const quote = `${alias}: \"${motto}\"`;
+  function pickRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
 
-  return {
-    alias,
-    background,
-    augments: selectedAugments,
-    corp,
-    syndicate,
-    gear: selectedGear,
-    motto,
-    bounty,
-    quote,
-  };
-}
+  function generateCharacter() {
+    return {
+      alias: pickRandom(aliases),
+      background: pickRandom(backgrounds),
+      augments: Array.from({ length: 3 }, () => pickRandom(augments)),
+      corp: Math.random() < 0.3 ? "Independent" : pickRandom(corps),
+      syndicate: Math.random() < 0.4 ? "Lone wolf" : pickRandom(syndicates),
+      gear: Array.from({ length: 3 }, () => pickRandom(gear)),
+      motto: pickRandom(mottoes),
+      bounty: `${Math.floor(Math.random() * 49000 + 1000)} credits`,
+      quote: "\"" + pickRandom(aliases) + ": " + pickRandom(mottoes) + "\"",
+    };
+  }
 
-function formatCharacter(character) {
-  return `
-Alias: ${character.alias}
-Background: ${character.background}
-Augments: ${character.augments.join(", ")}
-Corporation: ${character.corp}
-Syndicate: ${character.syndicate}
-Gear: ${character.gear.join(", ")}
-Motto: ${character.motto}
-Bounty: ${character.bounty}
-Quote: ${character.quote}
-  `;
-}
+  function animateCharacter(c) {
+    cardDiv.innerHTML = '';
+    const entries = [
+      ['Alias', c.alias],
+      ['Background', c.background],
+      ['Augments', c.augments.join(', ')],
+      ['Corporation', c.corp],
+      ['Syndicate', c.syndicate],
+      ['Gear', c.gear.join(', ')],
+      ['Motto', c.motto],
+      ['Bounty', c.bounty],
+      ['Quote', c.quote]
+    ];
+    entries.forEach(([label, value], idx) => {
+      setTimeout(() => {
+        const div = document.createElement('div');
+        div.className = 'trait';
+        div.innerHTML = `<span class="trait-label">${label}:</span> ${value}`;
+        cardDiv.appendChild(div);
+        requestAnimationFrame(() => div.classList.add('show'));
+      }, idx * 400);
+    });
+  }
 
-function displayCharacter(character) {
-  const output = formatCharacter(character);
-  document.getElementById("character").textContent = output;
-}
+  function copyToClipboard() {
+    const text = cardDiv.textContent;
+    if (!text.trim()) {
+      alert("Nothing to copy—generate a character first.");
+      return;
+    }
+    navigator.clipboard.writeText(text)
+      .then(() => alert("Character copied to clipboard."))
+      .catch(() => alert("Copy failed—your browser may not support this."));
+  }
 
-function copyToClipboard() {
-  const text = document.getElementById("character").textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    alert("Character copied to clipboard.");
-  });
-}
+  generateBtn.addEventListener("click", () => animateCharacter(generateCharacter()));
+  copyBtn.addEventListener("click", copyToClipboard);
 
-document.getElementById("generate").addEventListener("click", () => {
-  const char = generateCharacter();
-  displayCharacter(char);
-});
-
-document.getElementById("copy").addEventListener("click", () => {
-  copyToClipboard();
-});
-
-window.addEventListener("load", () => {
-  const char = generateCharacter();
-  displayCharacter(char);
+  // initial animation on load
+  animateCharacter(generateCharacter());
 });
