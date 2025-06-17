@@ -1,6 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const backgroundSkills = {
+    "Ex-corp security": [
+      "Tactics", "Firearms", "Leadership", "Intimidation", "Cybersecurity", "Logistics",
+      "First Aid", "Interrogation", "Defensive Driving", "Surveillance", "Negotiation", "Strategy"
+    ],
+    "Street rat": [
+      "Stealth", "Pickpocket", "Parkour", "Streetwise", "Bartering", "Lockpicking",
+      "Scavenging", "Brawling", "Improvisation", "Haggle", "Urban Navigation", "Networking"
+    ],
+    "Data thief": [
+      "Hacking", "Cryptography", "Social Engineering", "Code Analysis", "Network Infiltration", "Decryption",
+      "Firmware Manipulation", "Signal Jamming", "Malware Development", "Data Mining", "Trace Masking", "Programming"
+    ],
+    "Cyber-shaman": [
+      "Ritual Chanting", "Neurotheology", "Metaphysics", "Meditation", "Psionic Resonance", "Electronics",
+      "Biofeedback", "Altered States", "Symbol Interpretation", "Aura Reading", "Cult Negotiation", "Pharmaceuticals"
+    ],
+    "Synth musician": [
+      "Performance", "Synthesis", "Sound Design", "Rhythm", "Composition", "Instrumentation",
+      "Stage Presence", "Mixing", "Mastering", "DJing", "Crowd Reading", "Improvisation"
+    ]
+  };
+
   const aliases = ["Ghost", "Hex", "Vapor", "Nyx", "Echo", "Drift", "Blitz", "Cipher", "Nova", "Rogue"];
-  const backgrounds = ["Ex-corp security", "Street rat", "Data thief", "Cyber-shaman", "Synth musician"];
+  const backgrounds = Object.keys(backgroundSkills);
   const augments = ["Optical camo", "Neural uplink", "Dermal armor", "Reflex booster", "Nanofiber muscles"];
   const corps = ["Biodyne Systems", "Helix Dynamics", "Novacore Industries", "OmniTech Group", "Zenith Security"];
   const syndicates = ["Red Iris", "Nightshade Collective", "Black Lotus", "Silver Serpents", "Ghosthawks"];
@@ -21,17 +44,29 @@ document.addEventListener('DOMContentLoaded', () => {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
+  function pickMultiple(arr, count) {
+    const copy = [...arr];
+    const selected = [];
+    for (let i = 0; i < count; i++) {
+      const idx = Math.floor(Math.random() * copy.length);
+      selected.push(copy.splice(idx, 1)[0]);
+    }
+    return selected;
+  }
+
   function generateCharacter() {
+    const background = pickRandom(backgrounds);
     return {
       alias: pickRandom(aliases),
-      background: pickRandom(backgrounds),
-      augments: Array.from({ length: 3 }, () => pickRandom(augments)),
+      background,
+      skills: pickMultiple(backgroundSkills[background], 3),
+      augments: pickMultiple(augments, 3),
       corp: Math.random() < 0.3 ? "Independent" : pickRandom(corps),
       syndicate: Math.random() < 0.4 ? "Lone wolf" : pickRandom(syndicates),
-      gear: Array.from({ length: 3 }, () => pickRandom(gear)),
+      gear: pickMultiple(gear, 3),
       motto: pickRandom(mottoes),
       bounty: `${Math.floor(Math.random() * 49000 + 1000)} credits`,
-      quote: "\"" + pickRandom(aliases) + ": " + pickRandom(mottoes) + "\"",
+      quote: `"${pickRandom(aliases)}: ${pickRandom(mottoes)}"`,
     };
   }
 
@@ -40,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const entries = [
       ['Alias', c.alias],
       ['Background', c.background],
+      ['Skills', c.skills.join(', ')],
       ['Augments', c.augments.join(', ')],
       ['Corporation', c.corp],
       ['Syndicate', c.syndicate],
