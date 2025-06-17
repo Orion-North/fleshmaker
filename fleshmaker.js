@@ -40,8 +40,8 @@ function generateCharacter() {
   };
 }
 
-function displayCharacter(character) {
-  const output = `
+function formatCharacter(character) {
+  return `
 Alias: ${character.alias}
 Background: ${character.background}
 Augments: ${character.augments.join(", ")}
@@ -52,11 +52,30 @@ Motto: ${character.motto}
 Bounty: ${character.bounty}
 Quote: ${character.quote}
   `;
+}
 
+function displayCharacter(character) {
+  const output = formatCharacter(character);
   document.getElementById("character").textContent = output;
 }
 
+function copyToClipboard() {
+  const text = document.getElementById("character").textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert("Character copied to clipboard.");
+  });
+}
+
 document.getElementById("generate").addEventListener("click", () => {
+  const char = generateCharacter();
+  displayCharacter(char);
+});
+
+document.getElementById("copy").addEventListener("click", () => {
+  copyToClipboard();
+});
+
+window.addEventListener("load", () => {
   const char = generateCharacter();
   displayCharacter(char);
 });
