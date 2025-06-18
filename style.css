@@ -47,7 +47,7 @@ button {
   border-radius: 8px;
   text-align: left;
   white-space: pre-line;
-  min-height: 220px;
+  min-height: 260px;
   position: relative;
 }
 
@@ -60,6 +60,20 @@ button {
   border-radius: 4px;
   font-weight: bold;
   font-size: 0.9rem;
+}
+
+/* Rarity meter */
+.rarity-meter {
+  width: 100%;
+  background: #333;
+  height: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.rarity-fill {
+  height: 100%;
+  transition: width 0.5s ease;
 }
 
 /* Trait styling */
@@ -77,8 +91,15 @@ button {
 }
 
 /* Rarity colors */
-.rarity-common       { color: #b0b0b0; }
-.rarity-uncommon     { color: #1eff00; }
-.rarity-rare         { color: #0070dd; }
-.rarity-epic         { color: #a335ee; }
-.rarity-legendary    { color: #ff8000; }
+.rarity-common    { color: #b0b0b0; }
+.rarity-uncommon  { color: #1eff00; }
+.rarity-rare      { color: #0070dd; }
+.rarity-epic      { color: #a335ee; }
+.rarity-legendary { color: #ff8000; }
+
+/* Meter fill colors */
+.rarity-fill.rarity-common    { background: #b0b0b0; }
+.rarity-fill.rarity-uncommon  { background: #1eff00; }
+.rarity-fill.rarity-rare      { background: #0070dd; }
+.rarity-fill.rarity-epic      { background: #a335ee; }
+.rarity-fill.rarity-legendary { background: #ff8000; }
