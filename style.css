@@ -47,21 +47,38 @@ button {
   border-radius: 8px;
   text-align: left;
   white-space: pre-line;
-  min-height: 200px;
+  min-height: 220px;
+  position: relative;
 }
 
+/* Rarity badge */
+.overall-rarity {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* Trait styling */
 .trait {
   opacity: 0;
   margin-bottom: 8px;
 }
-
 .trait.show {
   opacity: 1;
   transition: opacity 0.4s ease-in;
 }
-
 .trait-label {
-  color: #ff0066;
   font-weight: bold;
   margin-right: 4px;
 }
+
+/* Rarity colors */
+.rarity-common       { color: #b0b0b0; }
+.rarity-uncommon     { color: #1eff00; }
+.rarity-rare         { color: #0070dd; }
+.rarity-epic         { color: #a335ee; }
+.rarity-legendary    { color: #ff8000; }
